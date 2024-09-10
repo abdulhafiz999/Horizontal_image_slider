@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,32 +20,46 @@
         <span><img src="images/image-4.png" ></span>
         <span><img src="images/image-5.png"></span>
         <span><img src="images/image-6.png"> </span>
-  
-  
       </div>
     </div>
     <img src="images/next.png" id="nextBtn">
   </div>
+
   <script>
-    let scrollContainer = document.querySelector(".gallery")
+    let scrollContainer = document.querySelector(".gallery");
     let backBtn = document.querySelector("#backBtn");
     let nextBtn = document.querySelector("#nextBtn");
+
+    const updateButtonState = () => {
+      const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      backBtn.style.opacity = scrollContainer.scrollLeft === 0 ? "0.5" : "1";
+      nextBtn.style.opacity = scrollContainer.scrollLeft >= maxScrollLeft ? "0.5" : "1";
+    };
+
+    // Adjust the scroll amount dynamically based on the width of the first image
+    const imageWidth = document.querySelector(".gallery img").clientWidth + 20; // Add some margin
 
     scrollContainer.addEventListener("wheel", (evt) => {
       evt.preventDefault();
       scrollContainer.scrollLeft += evt.deltaY;
       scrollContainer.style.scrollBehavior = "auto";
+      updateButtonState();
     });
 
-    nextBtn.addEventListener("click", ()=>{
-      scrollContainer.style.scrollBehavior ="smooth";
-      scrollContainer.scrollLeft += 900;
+    nextBtn.addEventListener("click", () => {
+      scrollContainer.style.scrollBehavior = "smooth";
+      scrollContainer.scrollLeft += imageWidth * 1; // Scroll by 3 images
+      updateButtonState();
     });
 
-    backBtn.addEventListener("click", ()=>{
-      scrollContainer.style.scrollBehavior ="smooth";
-      scrollContainer.scrollLeft -= 900;
+    backBtn.addEventListener("click", () => {
+      scrollContainer.style.scrollBehavior = "smooth";
+      scrollContainer.scrollLeft -= imageWidth * 1; // Scroll by 3 images
+      updateButtonState();
     });
+
+    // Initial button state check
+    updateButtonState();
   </script>
 </body>
 </html>
